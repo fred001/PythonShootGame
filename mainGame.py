@@ -75,11 +75,18 @@ clock = pygame.time.Clock()
 
 running = True
 
+frame=0 #
+shoot_frame=0
+
 while running:
     # 控制游戏最大帧率为60
     clock.tick(60)
 
+    frame+=1
+
+
     # 控制发射子弹频率,并发射子弹
+    """
     if not player.is_hit:
         if shoot_frequency % 15 == 0:
             bullet_sound.play()
@@ -87,6 +94,7 @@ while running:
         shoot_frequency += 1
         if shoot_frequency >= 15:
             shoot_frequency = 0
+    """
 
     # 生成敌机
     if enemy_frequency % 50 == 0:
@@ -167,6 +175,8 @@ while running:
             pygame.quit()
             exit()
             
+
+    # 因为时间太快，此处一秒会产生多个事件
     # 监听键盘事件
     key_pressed = pygame.key.get_pressed()
     # 若玩家被击中，则无效
@@ -179,6 +189,14 @@ while running:
             player.moveLeft()
         if key_pressed[K_d] or key_pressed[K_RIGHT]:
             player.moveRight()
+
+        #print(frame,shoot_frame)
+        if key_pressed[K_SPACE] and frame > (shoot_frame+10):
+            bullet_sound.play()
+            player.shoot(bullet_img)
+            shoot_frame=frame
+
+            print('shoot')
 
 
 font = pygame.font.Font(None, 48)
